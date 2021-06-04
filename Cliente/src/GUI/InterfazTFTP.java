@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import Domain.Cliente;
+
 public class InterfazTFTP extends JFrame implements ActionListener {
 	// InitComponents
 	private JMenu jmArchivo;
@@ -33,6 +35,8 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 	private JFileChooser jfcBuscaImagen;
 	private BufferedImage biImagen;
 	private FileNameExtensionFilter filter;
+	private ImageIcon icon;
+	private JLabel labelImage;
 
 	public InterfazTFTP() {
 		setTitle("Cliente TFTP");
@@ -96,6 +100,7 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 		this.jbtnImagen.addActionListener(this);
 		this.jbtnEnviar = new JButton("Enviar al Servidor");
 		this.jbtnEnviar.setFont(font1);
+		this.jbtnEnviar.addActionListener(this);
 		// bounds
 		this.jlbNombre.setBounds(10, 30, 100, 20);
 		this.jtfNombre.setBounds(80, 30, 100, 25);// 125
@@ -172,16 +177,25 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 				File fichero = this.jfcBuscaImagen.getSelectedFile();
 				try {
 					this.biImagen = ImageIO.read(fichero);
-					ImageIcon icon = new ImageIcon(this.biImagen);
-					JLabel label = new JLabel(icon);
-					label.setBounds(30, 150, 500, 500);
-					this.jpPanel.add(label);
+					this.icon = new ImageIcon(this.biImagen);
+					if (this.labelImage != null) {
+						this.jpPanel.remove(this.labelImage);
+					}
+					this.labelImage = new JLabel(icon);
+					this.labelImage.setBounds(30, 150, 500, 500);
+					this.jpPanel.add(this.labelImage);
 					repaint();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
+		} else if (e.getSource().equals(this.jbtnEnviar)) {
+			String nombre = this.jtfNombre.getText();
+			String servidor = this.jtfServidor.getText();
+			String puerto = this.jtfPort.getText();
+			Cliente cliente = new Cliente();
+			cliente.envio(nombre, servidor, puerto);
 		}
 	}
 }
