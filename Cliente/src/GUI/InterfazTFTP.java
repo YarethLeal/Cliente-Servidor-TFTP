@@ -37,6 +37,7 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 	private FileNameExtensionFilter filter;
 	private ImageIcon icon;
 	private JLabel labelImage;
+	private String rutaImagen;
 
 	public InterfazTFTP() {
 		setTitle("Cliente TFTP");
@@ -175,6 +176,7 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 			int seleccion = this.jfcBuscaImagen.showSaveDialog(this);
 			if (seleccion == JFileChooser.APPROVE_OPTION) {
 				File fichero = this.jfcBuscaImagen.getSelectedFile();
+				this.rutaImagen = fichero.getPath();
 				try {
 					this.biImagen = ImageIO.read(fichero);
 					this.icon = new ImageIcon(this.biImagen);
@@ -195,7 +197,7 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 			String servidor = this.jtfServidor.getText();
 			String puerto = this.jtfPort.getText();
 			Cliente cliente = new Cliente();
-			cliente.envio(nombre, servidor, puerto);
+			cliente.envio(nombre, servidor, puerto,this.rutaImagen);
 		}
 	}
 }

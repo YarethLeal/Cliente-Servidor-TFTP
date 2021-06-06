@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 
 public class MosaicoImagen {
 	private BufferedImage imagenPrincipal;
-	private ArrayList<PiezaImagen> imagenPartes = new ArrayList();
+	private ArrayList<PiezaImagen> imagenPartes = new ArrayList<PiezaImagen>();
 	private int width, height;
 
 	public MosaicoImagen(String ruta) {
@@ -25,8 +25,20 @@ public class MosaicoImagen {
 			e.printStackTrace();
 		}
 	}
+	
+	public MosaicoImagen(String ruta,int filas,int columnas) {
+		try {
+			this.imagenPrincipal = ImageIO.read(new File(ruta));
+			this.width = imagenPrincipal.getWidth(null);
+			this.height = imagenPrincipal.getHeight(null);
+			dividirImagen(filas, columnas);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-	private void dividirImagen(int filas, int columnas) {
+	public void dividirImagen(int filas, int columnas) {
 		int id = 0;
 		for (int i = 0; i < filas; i++) {
 			for (int j = 0; j < columnas; j++) {
@@ -39,4 +51,42 @@ public class MosaicoImagen {
 			}
 		}
 	}
+	
+	public void armaImagen(ArrayList<PiezaImagen> piezas) {
+		
+	}
+
+	public BufferedImage getImagenPrincipal() {
+		return imagenPrincipal;
+	}
+
+	public void setImagenPrincipal(BufferedImage imagenPrincipal) {
+		this.imagenPrincipal = imagenPrincipal;
+	}
+
+	public ArrayList<PiezaImagen> getImagenPartes() {
+		return imagenPartes;
+	}
+
+	public void setImagenPartes(ArrayList<PiezaImagen> imagenPartes) {
+		this.imagenPartes = imagenPartes;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	
+	
 }
