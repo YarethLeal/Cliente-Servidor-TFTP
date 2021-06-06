@@ -6,16 +6,20 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -27,16 +31,17 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 	private JMenu jmArchivo;
 	private JMenuItem jmiEnviar, jmiRecibir, jmiCreaCuenta, jmiCerrar;
 	private JMenuBar jmbArchivo;
-	//
 	private JLabel jlbNombre, jlbContrasena, jlbServidor, jlbPort;
 	private JTextField jtfNombre, jtfContrasena, jtfServidor, jtfPort;
-	private JButton jbtnEnviar, jbtnCrear, jbtnImagen;
+	private JButton jbtnEnviar, jbtnCrear, jbtnImagen, jbtnLista, jbtnPedir;
 	private JPanel jpPanel;
 	private JFileChooser jfcBuscaImagen;
 	private BufferedImage biImagen;
 	private FileNameExtensionFilter filter;
 	private ImageIcon icon;
 	private JLabel labelImage;
+	private String rutaImagen;
+	private JList<String> jlLista;
 
 	public InterfazTFTP() {
 		setTitle("Cliente TFTP");
@@ -131,6 +136,57 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 
 	private void pedirLayout() {
 		this.jpPanel.removeAll();
+		Font font1 = new Font("SansSerif", Font.BOLD, 16);
+		// label
+		this.jlbNombre = new JLabel("Nombre:");
+		this.jlbNombre.setFont(font1);
+		this.jlbContrasena = new JLabel("Contraseña:");
+		this.jlbContrasena.setFont(font1);
+		this.jlbServidor = new JLabel("Servidor:");
+		this.jlbServidor.setFont(font1);
+		this.jlbPort = new JLabel("Puerto:");
+		this.jlbPort.setFont(font1);
+		// textfield
+		this.jtfNombre = new JTextField();
+		this.jtfNombre.setFont(font1);
+		this.jtfContrasena = new JTextField();
+		this.jtfContrasena.setFont(font1);
+		this.jtfServidor = new JTextField();
+		this.jtfServidor.setFont(font1);
+		this.jtfPort = new JTextField("69");
+		this.jtfPort.setFont(font1);
+		// Botones
+		this.jbtnLista = new JButton("Lista");
+		this.jbtnLista.setFont(font1);
+		this.jbtnLista.addActionListener(this);
+		this.jbtnPedir = new JButton("Pedir del Servidor");
+		this.jbtnPedir.setFont(font1);
+		this.jbtnPedir.addActionListener(this);
+		// Lista
+		this.jlLista = new JList<String>();
+		// bounds
+		this.jlbNombre.setBounds(10, 30, 100, 20);
+		this.jtfNombre.setBounds(80, 30, 100, 25);// 125
+		this.jlbContrasena.setBounds(190, 30, 120, 20);
+		this.jtfContrasena.setBounds(290, 30, 120, 25);
+		this.jlbServidor.setBounds(430, 30, 120, 20);
+		this.jtfServidor.setBounds(505, 30, 120, 25);
+		this.jlbPort.setBounds(640, 30, 120, 20);
+		this.jtfPort.setBounds(700, 30, 45, 25);
+		this.jbtnLista.setBounds(10, 100, 180, 25);
+		this.jbtnPedir.setBounds(200, 100, 180, 25);
+		this.jlLista.setBounds(10, 150, 180, 250);
+		this.jpPanel.add(this.jlbNombre);
+		this.jpPanel.add(this.jtfNombre);
+		this.jpPanel.add(this.jlbContrasena);
+		this.jpPanel.add(this.jtfContrasena);
+		this.jpPanel.add(this.jlbServidor);
+		this.jpPanel.add(this.jtfServidor);
+		this.jpPanel.add(this.jlbPort);
+		this.jpPanel.add(this.jtfPort);
+		this.jpPanel.add(this.jbtnLista);
+		this.jpPanel.add(this.jbtnPedir);
+		this.jpPanel.add(this.jlLista);
 		repaint();
 	}
 
@@ -147,6 +203,7 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 		this.jtfContrasena.setFont(font1);
 		this.jbtnCrear = new JButton("Crear Cuenta");
 		this.jbtnCrear.setFont(font1);
+		this.jbtnCrear.addActionListener(this);
 		// layout
 		this.jlbNombre.setBounds(260, 150, 100, 20);
 		this.jtfNombre.setBounds(385, 150, 120, 25);
@@ -175,6 +232,7 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 			int seleccion = this.jfcBuscaImagen.showSaveDialog(this);
 			if (seleccion == JFileChooser.APPROVE_OPTION) {
 				File fichero = this.jfcBuscaImagen.getSelectedFile();
+				this.rutaImagen = fichero.getPath();
 				try {
 					this.biImagen = ImageIO.read(fichero);
 					this.icon = new ImageIcon(this.biImagen);
@@ -192,10 +250,75 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 			}
 		} else if (e.getSource().equals(this.jbtnEnviar)) {
 			String nombre = this.jtfNombre.getText();
+			String contrasena = this.jtfContrasena.getText();
 			String servidor = this.jtfServidor.getText();
 			String puerto = this.jtfPort.getText();
-			Cliente cliente = new Cliente();
-			cliente.envio(nombre, servidor, puerto);
+			if (nombre.equals("") || contrasena.equals("") || servidor.equals("") || puerto.equals("")) {
+				JOptionPane.showMessageDialog(null, "Hay campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
+			} else {
+				Cliente cliente = new Cliente();
+				int valida = cliente.validaUsuario(nombre, contrasena,servidor, puerto);
+				if (valida == 1) {
+					cliente.envio(nombre, servidor, puerto, this.rutaImagen);
+				} else {
+					JOptionPane.showMessageDialog(null, "Usuario o contraseña no validos", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		} else if (e.getSource().equals(this.jbtnLista)) {
+			String nombre = this.jtfNombre.getText();
+			String contrasena = this.jtfContrasena.getText();
+			String servidor = this.jtfServidor.getText();
+			String puerto = this.jtfPort.getText();
+			if (nombre.equals("") || contrasena.equals("") || servidor.equals("") || puerto.equals("")) {
+				JOptionPane.showMessageDialog(null, "Hay campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
+			} else {
+				Cliente cliente = new Cliente();
+				int valida = cliente.validaUsuario(nombre, contrasena,servidor, puerto);
+				if (valida == 1) {
+					ArrayList<String> datos = cliente.listaObjetos(nombre, servidor, puerto);
+					DefaultListModel<String> lista = new DefaultListModel<String>();
+					for (int i = 0; i < datos.size(); i++) {
+						lista.add(i, datos.get(i));
+					}
+					this.jlLista.setModel(lista);
+					repaint();
+				} else {
+					JOptionPane.showMessageDialog(null, "Usuario o contraseña no validos", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		} else if (e.getSource().equals(this.jbtnPedir)) {
+			if (this.jlLista.getModel().getSize() != 0) {
+				String eleccion = this.jlLista.getSelectedValue();
+				String nombre = this.jtfNombre.getText();
+				String contrasena = this.jtfContrasena.getText();
+				String servidor = this.jtfServidor.getText();
+				String puerto = this.jtfPort.getText();
+				if (nombre.equals("") || contrasena.equals("") || servidor.equals("") || puerto.equals("")||eleccion.equals("")){
+					JOptionPane.showMessageDialog(null, "Hay campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					Cliente cliente = new Cliente();
+					int valida = cliente.validaUsuario(nombre, contrasena,servidor, puerto);
+					if (valida == 1) {
+						cliente.recibir(nombre, servidor, puerto, eleccion);
+					} else {
+						JOptionPane.showMessageDialog(null, "Usuario o contraseña no validos", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		}else if (e.getSource().equals(this.jbtnCrear)) {
+			String nombre = this.jtfNombre.getText();
+			String contrasena = this.jtfContrasena.getText();
+			String servidor = this.jtfServidor.getText();
+			String puerto = this.jtfPort.getText();
+			if (nombre.equals("") || contrasena.equals("") || servidor.equals("") || puerto.equals("")){
+				JOptionPane.showMessageDialog(null, "Hay campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
+			} else {
+				Cliente cliente = new Cliente();
+				cliente.creaUsuario(nombre, contrasena,servidor, puerto);
+			}
 		}
 	}
 }
