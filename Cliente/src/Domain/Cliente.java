@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 public class Cliente {
 	private DatagramSocket socketCliente;
 	private byte[] informacion;
@@ -23,7 +25,46 @@ public class Cliente {
 
 	}
 
-	public int validaUsuario(String nombre, String contrasena) {
+	public int validaUsuario(String nombre, String contrasena, String server, String port) {
+		try {
+			// Socket para conexion a servidor
+			this.socketCliente = new DatagramSocket();
+
+			// Direccion del servidor
+			InetAddress servidor = InetAddress.getByName(server);
+
+			// Puerto del servidor
+			int puerto = Integer.parseInt(port);
+
+			// Mensaje en byte
+			this.mensaje = "Accion:Server";
+			this.informacion = mensaje.getBytes();
+
+			// Envio de Paquete de datos Accion
+			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+			this.socketCliente.send(this.paqueteCliente);
+			this.mensaje = "Accion:Verifica";
+			this.informacion = mensaje.getBytes();
+			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+			this.socketCliente.send(this.paqueteCliente);
+			this.mensaje = "Cliente:" + nombre + ":Contrasena:" + contrasena;
+			this.informacion = mensaje.getBytes();
+			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+			this.socketCliente.send(this.paqueteCliente);
+
+			// Recibir respuesta del servidor
+			byte[] bufer = new byte[1000];
+			DatagramPacket respuesta = new DatagramPacket(bufer, bufer.length);
+			this.socketCliente.receive(respuesta);
+			// Enviamos la respuesta del servidor a la salida estandar
+			String number = new String(respuesta.getData());
+			int validacion = Integer.parseInt(number);
+			// Cerrar Socket
+			this.socketCliente.close();
+			return validacion;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		return 0;
 	}
 
@@ -87,14 +128,10 @@ public class Cliente {
 		}
 	}
 
-	public void recibir(String nombre, String server, String port) {
+	public void recibir(String nombre, String server, String port, String archivo) {
 		try {
 			// Socket para conexion a servidor
 			this.socketCliente = new DatagramSocket();
-
-			// Mensaje en byte
-			mensaje = "Yolo baby";
-			informacion = mensaje.getBytes();
 
 			// Direccion del servidor
 			InetAddress servidor = InetAddress.getByName(server);
@@ -102,9 +139,24 @@ public class Cliente {
 			// Puerto del servidor
 			int puerto = Integer.parseInt(port);
 
+			// Mensaje en byte
+			this.mensaje = "Accion:Cliente";
+			this.informacion = mensaje.getBytes();
 			// Envio de Paquete de datos
-			DatagramPacket archivo = new DatagramPacket(informacion, informacion.length, servidor, puerto);
-			this.socketCliente.send(archivo);
+			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+			this.socketCliente.send(this.paqueteCliente);
+			this.mensaje = "Cliente:" + nombre;
+			this.informacion = mensaje.getBytes();
+			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+			this.socketCliente.send(this.paqueteCliente);
+			this.mensaje = "Accion:Recibir";
+			this.informacion = mensaje.getBytes();
+			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+			this.socketCliente.send(this.paqueteCliente);
+			this.mensaje = "Archivo:" + archivo;
+			this.informacion = mensaje.getBytes();
+			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+			this.socketCliente.send(this.paqueteCliente);
 
 			// Recibir respuesta del servidor
 			byte[] bufer = new byte[1000];
@@ -139,6 +191,10 @@ public class Cliente {
 			// Envio de Paquete de datos
 			this.paqueteCliente = new DatagramPacket(this.informacion, this.informacion.length, servidor, puerto);
 			this.socketCliente.send(this.paqueteCliente);
+			this.mensaje = "Cliente:" + nombre;
+			this.informacion = mensaje.getBytes();
+			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+			this.socketCliente.send(this.paqueteCliente);
 			this.mensaje = "Accion:Lista";
 			this.informacion = this.mensaje.getBytes();
 			this.paqueteCliente = new DatagramPacket(this.informacion, this.informacion.length, servidor, puerto);
@@ -159,6 +215,46 @@ public class Cliente {
 			System.out.println(e.getMessage());
 		}
 		return null;
+	}
+	
+	public void creaUsuario(String nombre, String contrasena, String server, String port) {
+		try {
+			// Socket para conexion a servidor
+			this.socketCliente = new DatagramSocket();
+
+			// Direccion del servidor
+			InetAddress servidor = InetAddress.getByName(server);
+
+			// Puerto del servidor
+			int puerto = Integer.parseInt(port);
+
+			// Mensaje en byte
+			this.mensaje = "Accion:Server";
+			this.informacion = mensaje.getBytes();
+
+			// Envio de Paquete de datos Accion
+			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+			this.socketCliente.send(this.paqueteCliente);
+			this.mensaje = "Accion:Crea";
+			this.informacion = mensaje.getBytes();
+			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+			this.socketCliente.send(this.paqueteCliente);
+			this.mensaje = "Cliente:" + nombre + ":Contrasena:" + contrasena;
+			this.informacion = mensaje.getBytes();
+			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+			this.socketCliente.send(this.paqueteCliente);
+
+			// Recibir respuesta del servidor
+			byte[] bufer = new byte[1000];
+			DatagramPacket respuesta = new DatagramPacket(bufer, bufer.length);
+			this.socketCliente.receive(respuesta);
+			// Cerrar Socket
+			this.socketCliente.close();
+			String info = new String(respuesta.getData());
+			JOptionPane.showMessageDialog(null, info);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public static byte[] toByteArray(Object obj) throws IOException {

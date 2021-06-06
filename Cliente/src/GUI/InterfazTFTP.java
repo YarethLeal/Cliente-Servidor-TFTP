@@ -203,6 +203,7 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 		this.jtfContrasena.setFont(font1);
 		this.jbtnCrear = new JButton("Crear Cuenta");
 		this.jbtnCrear.setFont(font1);
+		this.jbtnCrear.addActionListener(this);
 		// layout
 		this.jlbNombre.setBounds(260, 150, 100, 20);
 		this.jtfNombre.setBounds(385, 150, 120, 25);
@@ -256,7 +257,7 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Hay campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
 			} else {
 				Cliente cliente = new Cliente();
-				int valida = cliente.validaUsuario(nombre, contrasena);
+				int valida = cliente.validaUsuario(nombre, contrasena,servidor, puerto);
 				if (valida == 1) {
 					cliente.envio(nombre, servidor, puerto, this.rutaImagen);
 				} else {
@@ -273,11 +274,11 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Hay campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
 			} else {
 				Cliente cliente = new Cliente();
-				int valida = cliente.validaUsuario(nombre, contrasena);
+				int valida = cliente.validaUsuario(nombre, contrasena,servidor, puerto);
 				if (valida == 1) {
 					ArrayList<String> datos = cliente.listaObjetos(nombre, servidor, puerto);
 					DefaultListModel<String> lista = new DefaultListModel<String>();
-					for(int i =0;i<datos.size();i++) {
+					for (int i = 0; i < datos.size(); i++) {
 						lista.add(i, datos.get(i));
 					}
 					this.jlLista.setModel(lista);
@@ -288,7 +289,36 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 				}
 			}
 		} else if (e.getSource().equals(this.jbtnPedir)) {
-
+			if (this.jlLista.getModel().getSize() != 0) {
+				String eleccion = this.jlLista.getSelectedValue();
+				String nombre = this.jtfNombre.getText();
+				String contrasena = this.jtfContrasena.getText();
+				String servidor = this.jtfServidor.getText();
+				String puerto = this.jtfPort.getText();
+				if (nombre.equals("") || contrasena.equals("") || servidor.equals("") || puerto.equals("")||eleccion.equals("")){
+					JOptionPane.showMessageDialog(null, "Hay campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
+				} else {
+					Cliente cliente = new Cliente();
+					int valida = cliente.validaUsuario(nombre, contrasena,servidor, puerto);
+					if (valida == 1) {
+						cliente.recibir(nombre, servidor, puerto, eleccion);
+					} else {
+						JOptionPane.showMessageDialog(null, "Usuario o contraseña no validos", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		}else if (e.getSource().equals(this.jbtnCrear)) {
+			String nombre = this.jtfNombre.getText();
+			String contrasena = this.jtfContrasena.getText();
+			String servidor = this.jtfServidor.getText();
+			String puerto = this.jtfPort.getText();
+			if (nombre.equals("") || contrasena.equals("") || servidor.equals("") || puerto.equals("")){
+				JOptionPane.showMessageDialog(null, "Hay campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
+			} else {
+				Cliente cliente = new Cliente();
+				cliente.creaUsuario(nombre, contrasena,servidor, puerto);
+			}
 		}
 	}
 }
