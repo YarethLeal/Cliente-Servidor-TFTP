@@ -42,7 +42,7 @@ public class Cliente {
 
 	public void recibir(String nombre, String server, String port) {
 		try {
-
+		
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
