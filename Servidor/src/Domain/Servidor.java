@@ -49,15 +49,10 @@ public class Servidor extends JFrame implements Runnable {
 
 			while (true) {
 				DatagramPacket esperaAccion = new DatagramPacket(bufer, bufer.length);
-				// Socket socket = serverSocket.accept();
-				System.out.println("Acepte el cliente");
 				serverSocket.receive(esperaAccion);
-				System.out.print("Datagrama recibido del host: " + esperaAccion.getAddress());
-				System.out.println(" desde el puerto remoto: " + esperaAccion.getPort());
-				System.out.println("Asado");
 				ServidorAtiende hiloServer = new ServidorAtiende(serverSocket, esperaAccion);
 			    hiloServer.start();
-				System.out.println("Mensaje de peticion:" + esperaAccion.getData().toString());
+				
 				
 			}
 

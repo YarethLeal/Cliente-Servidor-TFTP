@@ -10,6 +10,7 @@ public class ServidorAtiende extends Thread{
 	private int socketPortNumber;
 	private DatagramSocket socket;
 	DatagramPacket esperaAccion;
+
 	
 	public ServidorAtiende(DatagramSocket socket,DatagramPacket esperaAccion) {
 		super("Hilo para Cliente");
@@ -21,8 +22,13 @@ public class ServidorAtiende extends Thread{
 	public void run() {
 		try {
 		System.out.println("Cliente acceptado");
+		System.out.print("Datagrama recibido del host: " + esperaAccion.getAddress());
+		System.out.println(" desde el puerto remoto: " + esperaAccion.getPort());
+		System.out.println(new String(esperaAccion.getData()));
+		String mensaje = "Recibido";
+		byte[] message = mensaje.getBytes();
 		DatagramPacket respuesta =
-		          new DatagramPacket(esperaAccion.getData(), esperaAccion.getLength(),
+		          new DatagramPacket(message, message.length,
 		        		  esperaAccion.getAddress(), esperaAccion.getPort());
 
 		        // Enviamos la respuesta, que es un eco
