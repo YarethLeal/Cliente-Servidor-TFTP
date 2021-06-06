@@ -39,5 +39,18 @@ public class ManejarFile {
 		return listaArchivos;
 
 	}
+//	
+//	public void GuardarCarpeta(String nombre) {
+//		File carpeta = new File("../Servidor/Clientes/" + nombre);
+//		System.out.println(carpeta.getName());
+//		if (!carpeta.exists()) {
+//			if (carpeta.mkdirs()) {
+//				System.out.println("Carpeta Creada");
+//			} else {
+//				System.out.println("La carpeta no se pudo crear");
+//			}
+//		}
+//	}
+	
 
 }
