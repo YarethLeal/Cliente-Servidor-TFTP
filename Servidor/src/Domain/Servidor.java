@@ -14,6 +14,7 @@ public class Servidor extends JFrame implements Runnable {
 
 	private int socketPortNumber = 69;
 	private JLabel jlIp;
+	private JLabel jlPort;
 	private Thread hilo;
 
 	public Servidor(int socketPortNumber) throws IOException {
@@ -25,6 +26,10 @@ public class Servidor extends JFrame implements Runnable {
 		this.jlIp = new JLabel();
 		this.jlIp.setBounds(50, 50, 500, 100);
 		this.add(this.jlIp);
+		
+		this.jlPort = new JLabel("Puerto: "+socketPortNumber);
+		this.jlPort.setBounds(50, 50, 500, 150);
+		this.add(this.jlPort);
 
 		this.hilo = new Thread(this);
 		this.hilo.start();
@@ -50,16 +55,10 @@ public class Servidor extends JFrame implements Runnable {
 				System.out.print("Datagrama recibido del host: " + esperaAccion.getAddress());
 				System.out.println(" desde el puerto remoto: " + esperaAccion.getPort());
 				System.out.println("Asado");
-				// ServidorAtiende hiloServer = new ServidorAtiende(socket);
-				// hiloServer.start();
+				ServidorAtiende hiloServer = new ServidorAtiende(serverSocket, esperaAccion);
+			    hiloServer.start();
 				System.out.println("Mensaje de peticion:" + esperaAccion.getData().toString());
 				
-				 DatagramPacket respuesta =
-				          new DatagramPacket(esperaAccion.getData(), esperaAccion.getLength(),
-				        		  esperaAccion.getAddress(), esperaAccion.getPort());
-
-				        // Enviamos la respuesta, que es un eco
-				 serverSocket.send(respuesta);
 			}
 
 		} catch (IOException e) {
