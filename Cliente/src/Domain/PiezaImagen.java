@@ -13,4 +13,18 @@ public class PiezaImagen {
 		this.pieza = img;
 		this.id = num;
 	}
+	public Image getPieza() {
+		return pieza;
+	}
+	public void setPieza(Image pieza) {
+		this.pieza = pieza;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
 }
