@@ -17,7 +17,7 @@ public class Main {
 //	        servidor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //	        servidor.setLocationRelativeTo(null);
 //	        servidor.setResizable(false);
-//	 
+//	        
 
 		ServidorPrueba servidor = new ServidorPrueba(69);
 		servidor.setVisible(true);

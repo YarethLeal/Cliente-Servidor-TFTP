@@ -62,6 +62,7 @@ public class ServidorPrueba extends JFrame implements Runnable {
 			while (true) {
 				DatagramPacket esperaAccion = new DatagramPacket(bufer, bufer.length);
 				serverSocket.receive(esperaAccion);
+
 				String cadena = new String(esperaAccion.getData());
 				String[] accion = cadena.split(":");
 				System.out.println(cadena);
@@ -117,6 +118,7 @@ public class ServidorPrueba extends JFrame implements Runnable {
 							serverSocket.send(respuesta);
 						}
 					}
+
 				}
 			}
 

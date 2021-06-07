@@ -12,17 +12,21 @@ public class UsuarioData extends DataBase {
 		super();
 	}
 
-	public void verificarUsuario(String usuario, String contrasena) throws ClassNotFoundException, SQLException {
+	public int verificarUsuario(String usuario, String contrasena) throws ClassNotFoundException, SQLException {
 		Connection sqlconn = getSQLConnetion();
 		Statement stmt = sqlconn.createStatement();
 		try {
 			String SQL = "EXEC sp_CONSULTAR '" + usuario + "','" + contrasena + "'";
 			ResultSet rs = stmt.executeQuery(SQL);
-			System.out.println(rs);
+//			System.out.println(rs);
+			String[] res = rs.toString().split(":");
+			int r=Integer.parseInt(res[1]);
+			return r;
 		} catch (Exception e) {
 
 			System.out.println("No se pudo realizar la consulta en la BD SQL. " + e.getMessage());
 		}
+		return 0;
 
 	}
 
