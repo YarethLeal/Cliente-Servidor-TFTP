@@ -56,11 +56,11 @@ public class ServidorPrueba extends JFrame implements Runnable {
 			while (true) {
 				DatagramPacket esperaAccion = new DatagramPacket(bufer, bufer.length);
 				serverSocket.receive(esperaAccion);
-				serverSocket.receive(esperaAccion);
+				System.out.println("Cliente aceptado");
 				String cadena = new String(esperaAccion.getData());
 				String[] accion = cadena.split(":");
-				System.out.println(cadena);
-				if (accion[0] == "Crea") {
+				System.out.println(cadena+accion[0]);
+				if (accion[0].equals("Crea")) {
 					System.out.println(accion[0] + accion[1] + accion[3]);
 					usuario.insertUsuario(accion[1], accion[2]);
 					file.CrearCarpeta(accion[1]);

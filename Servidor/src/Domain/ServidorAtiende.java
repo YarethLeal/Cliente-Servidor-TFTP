@@ -38,7 +38,7 @@ public class ServidorAtiende extends Thread {
 		String[] accion = cadena.split(":");   
 		System.out.println(cadena);
 			if(accion[0]=="Crea") {
-				System.out.println(accion[0]+accion[1]+accion[3]);
+				
 				usuario.insertUsuario(accion[1], accion[2]);
 				file.CrearCarpeta(accion[1]);
 				String mensaje = "Usuario Creado";
