@@ -44,6 +44,7 @@ public class ServidorAtiende extends Thread {
 				String mensaje = "Usuario Creado";
 				byte[] message = mensaje.getBytes();
 				 respuesta =new DatagramPacket(message, message.length,esperaAccion.getAddress(), esperaAccion.getPort());
+				 socket.send(respuesta);
 			}
 //			socket.send(respuesta);
 		} catch (IOException e) {

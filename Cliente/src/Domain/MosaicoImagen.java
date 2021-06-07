@@ -52,20 +52,37 @@ public class MosaicoImagen {
 		}
 	}
 	
-	public void armaImagen(ArrayList<PiezaImagen> piezas) {
+	public void armaImagen(ArrayList<PiezaImagen> piezas) throws IOException {
 		
 		int cantPartes = piezas.size();
-		
-		BufferedImage[] images = new BufferedImage[cantPartes];
+		int type, width,height;
+		BufferedImage[] imagenes = new BufferedImage[cantPartes];
 		
 		for (int i = 0; i < cantPartes; i++) {
 			for (int j = 0; j < cantPartes; j++) {
 				if(piezas.get(j).getId()==i) {
-//					images[i] = (piezas.get(j).getPieza());
+					imagenes[i] =(BufferedImage)piezas.get(j).getPieza();
 				}
 			}
             
         }
+		
+		type= imagenes[0].getType();
+		width= imagenes[0].getWidth();
+		height= imagenes[0].getHeight();
+		
+		BufferedImage imagenCompleta = new BufferedImage(width*15, height*15, type);
+		
+		  int num = 0;
+	        for (int i = 0; i < 15; i++) {
+	            for (int j = 0; j < 15; j++) {
+	            	imagenCompleta.createGraphics().drawImage(imagenes[num], width * j, height * i, null);
+	                num++;
+	            }
+	        }
+	        
+	        ImageIO.write(imagenCompleta, "jpeg", new File("imagenCompleta.jpg"));
+		
 	}
 
 	public BufferedImage getImagenPrincipal() {
