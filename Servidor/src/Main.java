@@ -13,7 +13,7 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		
 
-	        Servidor servidor = new Servidor(6973);
+	        Servidor servidor = new Servidor(69);
 	        servidor.setVisible(true);
 	        servidor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        servidor.setLocationRelativeTo(null);

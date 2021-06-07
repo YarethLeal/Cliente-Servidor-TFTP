@@ -54,6 +54,18 @@ public class MosaicoImagen {
 	
 	public void armaImagen(ArrayList<PiezaImagen> piezas) {
 		
+		int cantPartes = piezas.size();
+		
+		BufferedImage[] images = new BufferedImage[cantPartes];
+		
+		for (int i = 0; i < cantPartes; i++) {
+			for (int j = 0; j < cantPartes; j++) {
+				if(piezas.get(j).getId()==i) {
+//					images[i] = (piezas.get(j).getPieza());
+				}
+			}
+            
+        }
 	}
 
 	public BufferedImage getImagenPrincipal() {
