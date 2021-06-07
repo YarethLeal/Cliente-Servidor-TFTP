@@ -199,8 +199,16 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 		this.jlbContrasena.setFont(font1);
 		this.jtfNombre = new JTextField();
 		this.jtfNombre.setFont(font1);
+		this.jlbServidor = new JLabel("Servidor:");
+		this.jlbServidor.setFont(font1);
+		this.jlbPort = new JLabel("Puerto:");
+		this.jlbPort.setFont(font1);
 		this.jtfContrasena = new JTextField();
 		this.jtfContrasena.setFont(font1);
+		this.jtfServidor = new JTextField();
+		this.jtfServidor.setFont(font1);
+		this.jtfPort = new JTextField("69");
+		this.jtfPort.setFont(font1);
 		this.jbtnCrear = new JButton("Crear Cuenta");
 		this.jbtnCrear.setFont(font1);
 		this.jbtnCrear.addActionListener(this);
@@ -209,11 +217,19 @@ public class InterfazTFTP extends JFrame implements ActionListener {
 		this.jtfNombre.setBounds(385, 150, 120, 25);
 		this.jlbContrasena.setBounds(260, 190, 150, 20);
 		this.jtfContrasena.setBounds(385, 190, 120, 25);
-		this.jbtnCrear.setBounds(300, 240, 170, 20);
+		this.jlbServidor.setBounds(260, 230, 120, 20);
+		this.jtfServidor.setBounds(385, 230, 120, 25);
+		this.jlbPort.setBounds(260, 270, 120, 20);
+		this.jtfPort.setBounds(385, 270, 45, 25);
+		this.jbtnCrear.setBounds(300, 300, 170, 20);
 		this.jpPanel.add(this.jlbNombre);
 		this.jpPanel.add(this.jtfNombre);
 		this.jpPanel.add(this.jlbContrasena);
 		this.jpPanel.add(this.jtfContrasena);
+		this.jpPanel.add(this.jlbServidor);
+		this.jpPanel.add(this.jtfServidor);
+		this.jpPanel.add(this.jlbPort);
+		this.jpPanel.add(this.jtfPort);
 		this.jpPanel.add(this.jbtnCrear);
 		repaint();
 	}

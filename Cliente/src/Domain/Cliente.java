@@ -229,17 +229,17 @@ public class Cliente {
 			int puerto = Integer.parseInt(port);
 
 			// Mensaje en byte
-			this.mensaje = "Accion:Server";
-			this.informacion = mensaje.getBytes();
+//			this.mensaje = "Accion:Server";
+//			this.informacion = mensaje.getBytes();
 
-			// Envio de Paquete de datos Accion
-			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
-			this.socketCliente.send(this.paqueteCliente);
-			this.mensaje = "Accion:Crea";
-			this.informacion = mensaje.getBytes();
-			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
-			this.socketCliente.send(this.paqueteCliente);
-			this.mensaje = "Cliente:" + nombre + ":Contrasena:" + contrasena;
+//			// Envio de Paquete de datos Accion
+//			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+//			this.socketCliente.send(this.paqueteCliente);
+//			this.mensaje = "Accion:Crea";
+//			this.informacion = mensaje.getBytes();
+//			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
+//			this.socketCliente.send(this.paqueteCliente);
+			this.mensaje = "Crea:" + nombre + ":" + contrasena;
 			this.informacion = mensaje.getBytes();
 			this.paqueteCliente = new DatagramPacket(informacion, informacion.length, servidor, puerto);
 			this.socketCliente.send(this.paqueteCliente);
